@@ -18,3 +18,4 @@ fi
 
 echo "ceqr dbs exist - executing command: $migrate_cmd"
 $migrate_cmd
+RAILS_ENV=test $migrate_cmd

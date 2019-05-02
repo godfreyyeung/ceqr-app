@@ -11,7 +11,7 @@ services:
     environment:
       PORT: 3000
       DATABASE_URL: postgis://postgres@postgis:5432/ceqr_rails
-      CEQR_DATA_DB_URL: postgis://test_ceqr_app:rhqnwjwiup4yafzw@cear-data-do-user-1939427-0.db.ondigitalocean.com:25060/ceqr_data
+      CEQR_DATA_DB_URL: postgis://doadmin:hvkqvktmdopbfd93@ceqr-data-readonly-do-user-1939427-0.db.ondigitalocean.com:25060/defaultdb
       JWT_SALT: saltysaltysalt
       SENDGRID_KEY: ''
       ADMIN_EMAILS: ''

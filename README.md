@@ -47,9 +47,17 @@ cd ceqr-app
      - The env for ceqr app is defined in the `environment` section of the `ceqr` service. If you want to define your env from a file, swap out `env` section for [`env_file` section](https://docs.docker.com/compose/compose-file/#env_file)
      - Port mappings are defined in `ports` sections; to change the port a service is mapped to and exposed on on your machine, change the first port in the mapping, i.e. "3001:3000" if you want ceqr running on port 3001 on your machine
 
-4.  That's IT!!!!!!
+4. That's IT!!!!!!
 
 (NOTE: the ember frontend is built & managed by a gem that handles everything from within the rails app. It is v slow. Working on pulling it out and running it as a separate ember app, at least for docker world! But for now, just know your UI stuff will be slow slow slow)
+
+4.1 Good to know
+
+The service names are _aliases_ defined in docker-compose.yaml, so the the listing you find in `docker-compose ps` does not include the correct _service_ names in Docker parlance. To run tests, you can say this:
+
+    `docker-compose run ceqr rspec`
+
+Naturally, any other Rails/Ruby-specific commands should work similarly, and must be run in the "ceqr" service.
 
 ..................or do all these steps:
 
