@@ -1,15 +1,9 @@
 {
+  "env": {
+    "PROJECT_PATH": "backend"
+  },
   "buildpacks": [
-    { "url": "https://github.com/heroku/heroku-buildpack-nodejs" },
-    { "url": "https://github.com/heroku/heroku-buildpack-ruby" },
-    { "url": "https://github.com/heroku/heroku-buildpack-google-chrome" }
-  ],
-  "addons": [
-    {
-      "plan": "heroku-postgresql",
-      "options": {
-        "version": "10"
-      }
-    }
+    { "url": "https://github.com/timanovsky/subdir-heroku-buildpack.git" },
+    { "url": "https://github.com/heroku/heroku-buildpack-ruby" }
   ]
 }
