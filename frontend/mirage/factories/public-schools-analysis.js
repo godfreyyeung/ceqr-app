@@ -1,6 +1,12 @@
-import { Factory } from 'ember-cli-mirage';
+import { Factory, association, trait } from 'ember-cli-mirage';
 
 export default Factory.extend({
+  // traits
+  analysisWithNoSchools: trait({
+    schoolsWithAction: [],
+    project: association(),
+  }),
+
   multipliers: () => ({
     version: "november-2018",
     districts: [
@@ -335,6 +341,13 @@ export default Factory.extend({
       district: 17,
       cartodb_id: 25,
       subdistrict: 2
+    },
+    {
+      id: 171,
+      sdName: "District 17 - Subdistrict 1",
+      district: 17,
+      cartodb_id: 24,
+      subdistrict: 1
     }
   ],
   subdistrictsFromUser: () => [],

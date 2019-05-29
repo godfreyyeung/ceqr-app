@@ -98,7 +98,10 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
 
-    ENV['ember-simple-auth-token'].tokenExpirationInvalidateSession = false;
+    ENV['ember-simple-auth-token'] = {
+      tokenExpirationInvalidateSession: false,
+      refreshAccessTokens: false,
+    };
   }
 
   if (environment === 'production') {
