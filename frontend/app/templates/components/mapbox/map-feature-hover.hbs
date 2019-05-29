@@ -1,0 +1,8 @@
+{{map.on 'mousemove' (action 'didHoverLayer')}}
+
+{{#if hoveredFeature}}
+  {{yield (hash
+    feature=hoveredFeature
+    mousePosition=mousePosition
+  )}}
+{{/if}}

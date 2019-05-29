@@ -88,6 +88,7 @@
     "@sentry/browser": "^4.6.3",
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
+    "ember-mapbox-composer": "0.2.3",
     "pretender": "3.0.1"
   },
   "ember-addon": {
