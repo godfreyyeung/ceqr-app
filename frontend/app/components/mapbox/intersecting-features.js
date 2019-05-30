@@ -1,6 +1,5 @@
 import Component from '@ember/component';
-import { keepLatestTask } from 'ember-concurrency-decorators';
-import { timeout } from 'ember-concurrency';
+import { computed } from '@ember-decorators/object';
 
 export default class MapboxIntersectingFeatures extends Component {
   // required
@@ -9,26 +8,17 @@ export default class MapboxIntersectingFeatures extends Component {
   map = {};
 
   // id of layer to query
-  layerId = '';
+  options = {};
 
-  // hoveredFeatures
-  hoveredFeatures = [];
-
-  // point used to query for intersecting features
-  point = {};
+  // a mapbox-gl "point-like" object
+  point = {}
 
   // grabs the intersecting features from mapbox-gl
-  @keepLatestTask
-  *queryRenderedFeatures(e) {
-    const { target, point } = e;
+  @computed('point', 'options')
+  get intersectingFeatures() {
+    const { map, point, options } = this;
+    const { instance } = map;
 
-    yield timeout(5);
-
-    const features = target.queryRenderedFeatures(point, {
-      layers: [this.layerId],
-    });
-
-    this.set('hoveredFeatures', features);
-    this.set('point', point);
+    return instance.queryRenderedFeatures(point, { ...options });
   }
 }

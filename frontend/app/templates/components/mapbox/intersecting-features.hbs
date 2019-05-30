@@ -1,6 +1,1 @@
-{{map.on 'mousemove' this.layerId (perform this.queryRenderedFeatures)}}
-
-{{yield (hash
-  features=hoveredFeatures
-  point=point
-)}}
+{{yield intersectingFeatures}}

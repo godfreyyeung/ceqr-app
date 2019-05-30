@@ -14,27 +14,9 @@
         paint=(hash fill-color='green')
       ) as |layer|
     }}
-      {{#mapbox/intersecting-features map=map
-        layerId=layer.layerId as |intersection|
-      }}
-        {{#if intersection.features}}
-          {{!-- this could be a component --}}
-          {{#labs-layers-tooltip
-            mousePosition=intersection.point
-          }}
-            <div class="ui card">
-              <div class="content">
-                <div class="header">{{intersection.features.firstObject.properties.boroname}}</div>
-                <div class="meta">
-                  <span>2 days ago</span>
-                  <a>{{intersection.features.firstObject.properties.boroname}}</a>
-                </div>
-                <p></p>
-              </div>
-            </div>
-          {{/labs-layers-tooltip}}
-        {{/if}}
-      {{/mapbox/intersecting-features}}
+      {{transportation/project-map/census-tract-popup
+        map=map
+        layerId=layer.layerId}}
     {{/carto-source.layer}}
 
     {{carto-source.layer

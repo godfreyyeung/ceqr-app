@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, pauseTest } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | transportation/project-map', function(hooks) {
@@ -12,15 +12,8 @@ module('Integration | Component | transportation/project-map', function(hooks) {
 
     await render(hbs`{{transportation/project-map}}`);
 
+    await pauseTest();
+
     assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
-    await render(hbs`
-      {{#transportation/project-map}}
-        template block text
-      {{/transportation/project-map}}
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
   });
 });
