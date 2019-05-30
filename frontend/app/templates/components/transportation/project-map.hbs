@@ -1,0 +1,56 @@
+{{#mapbox-gl
+  id="study-area-map"
+  initOptions=(hash
+    style='mapbox://styles/mapbox/light-v9'
+    zoom=9.2
+    center=(array -74 40.7071266)
+  ) as |map|
+}}
+  {{#mapbox/carto-vector-source map=map as |carto-source|}}
+    {{#carto-source.layer
+      sql='select * from nyc_census_tracts_2010'
+      layer=(hash
+        type='fill'
+        paint=(hash fill-color='green')
+      ) as |layer|
+    }}
+      {{#mapbox/intersecting-features map=map
+        layerId=layer.layerId as |intersection|
+      }}
+        {{#if intersection.features}}
+          {{!-- this could be a component --}}
+          {{#labs-layers-tooltip
+            mousePosition=intersection.point
+          }}
+            <div class="ui card">
+              <div class="content">
+                <div class="header">{{intersection.features.firstObject.properties.boroname}}</div>
+                <div class="meta">
+                  <span>2 days ago</span>
+                  <a>{{intersection.features.firstObject.properties.boroname}}</a>
+                </div>
+                <p></p>
+              </div>
+            </div>
+          {{/labs-layers-tooltip}}
+        {{/if}}
+      {{/mapbox/intersecting-features}}
+    {{/carto-source.layer}}
+
+    {{carto-source.layer
+      sql='select * from mta_subway_routes_v0'
+      layer=(hash
+        type='line'
+        paint=(hash line-color='red')
+      )
+    }}
+
+    {{carto-source.layer
+      sql='select * from mta_bus_stops_v0'
+      layer=(hash
+        type='circle'
+        paint=(hash circle-color='pink' circle-radius=1)
+      )
+    }}
+  {{/mapbox/carto-vector-source}}
+{{/mapbox-gl}}

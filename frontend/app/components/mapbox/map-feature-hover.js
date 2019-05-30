@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { action } from '@ember-decorators/object';
 
-export default class MapboxMapFeatureHoverComponent extends Component {
+export default class MapboxIntersectingFeatures extends Component {
   // required
   // option
   map = {};

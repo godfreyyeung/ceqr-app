@@ -5,10 +5,7 @@
 
   {{#if hasBlock}}
     {{yield (hash
-      hovered-feature=(component 'mapbox/map-feature-hover'
-        map=map
-        layerId=mapboxLayerOptions.id
-      )
+      layerId=mapboxLayerOptions.id
     )}}
   {{/if}}
 {{/if}}
