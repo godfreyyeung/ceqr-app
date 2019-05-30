@@ -7,20 +7,20 @@ module('Integration | Component | transportation/project-map/census-tract-popup'
   setupRenderingTest(hooks);
 
   test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+    this.map = {
+      instance: {
+        queryRenderedFeatures: () => [],
+        on() {},
+        off() {},
+      },
+    };
 
-    await render(hbs`{{transportation/project-map/census-tract-popup}}`);
-
-    assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
     await render(hbs`
-      {{#transportation/project-map/census-tract-popup}}
-        template block text
-      {{/transportation/project-map/census-tract-popup}}
+      {{transportation/project-map/census-tract-popup
+        map=map
+        layerId='test'}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal(this.element.textContent.trim(), '');
   });
 });

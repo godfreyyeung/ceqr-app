@@ -1,26 +1,37 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | mapbox/intersecting-features', function(hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+  test('it renders, recomputes', async function(assert) {
+    this.map = {
+      instance: {
+        queryRenderedFeatures: () => [],
+      },
+    };
 
-    await render(hbs`{{mapbox/intersecting-features}}`);
+    this.point = { x: 0, y: 0 };
 
-    assert.equal(this.element.textContent.trim(), '');
-
-    // Template block usage:
     await render(hbs`
-      {{#mapbox/intersecting-features}}
-        template block text
+      {{#mapbox/intersecting-features
+        map=map
+        point=point
+        as |features|
+      }}
+        {{features.length}}
       {{/mapbox/intersecting-features}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.equal(this.element.textContent.trim(), '0');
+
+    this.map.instance.queryRenderedFeatures = () => [{ type: 'Feature' }];
+    this.set('point', { x: 1, y: 1 });
+
+    await settled();
+
+    assert.equal(this.element.textContent.trim(), '1');
   });
 });
