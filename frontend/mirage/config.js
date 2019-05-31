@@ -88,6 +88,8 @@ export default function() {
    */
   this.patch('public-schools-analyses/:id');
 
+  this.patch('transportation-analyses/:id');
+
   /**
    *
    * BBLs

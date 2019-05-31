@@ -1,0 +1,12 @@
+{{#mapbox/current-mouse-event mapboxEventName="click"  map=map as |mapMouseEvent|}}
+  {{#mapbox/intersecting-features map=map
+    point=mapMouseEvent.point
+    options=(hash layers=(array layerId)) as |feature|
+  }}
+    {{#census-tract-selector
+      censusTractFeature=feature
+      onselect=(action "toggleCensusTract")
+    }}
+    {{/census-tract-selector}}
+  {{/mapbox/intersecting-features}}
+{{/mapbox/current-mouse-event}}
