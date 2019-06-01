@@ -6,6 +6,9 @@
     {{public-schools/with-action/change-in-enrollment analysis=model.publicSchoolsAnalysis}}
   </div>
   <div class="sixteen wide column">
-    {{public-schools/with-action/results analysis=model.publicSchoolsAnalysis}}
+    <PublicSchools::WithAction::Results
+      @analysis={{model.publicSchoolsAnalysis}}
+     />
+
   </div>
 </div>
