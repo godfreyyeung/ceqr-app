@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { keepLatestTask } from 'ember-concurrency-decorators';
+import { restartableTask } from 'ember-concurrency-decorators';
 import { timeout } from 'ember-concurrency';
 
 const DEFAULT_MS = 500;
@@ -23,7 +23,7 @@ export default class ThrottlePropertyComponent extends Component {
    this.didUpdateAttributesTask.perform(); 
   }
 
-  @keepLatestTask({
+  @restartableTask({
     maxConcurrency: 1,
   })
   *didUpdateAttributesTask() {
