@@ -5,6 +5,7 @@ import { computed } from '@ember-decorators/object';
 
 export default class SolidWasteAnalysisModel extends Model {
   @belongsTo project;
+  @belongsTo transportationAnalysis;
 
   @computed('project.totalUnits', 'totalCommercialSqFt')
   get describeStorage() {
@@ -15,4 +16,5 @@ export default class SolidWasteAnalysisModel extends Model {
   get totalCommercialSqFt() {
     return this.get('project.commercialLandUse').reduce((a, c) => a + c.grossSqFt, 0);
   }
+
 }

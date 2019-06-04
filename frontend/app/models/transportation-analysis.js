@@ -4,8 +4,9 @@ import { attr, belongsTo } from '@ember-decorators/data';
 import { computed } from '@ember-decorators/object';
 import { alias } from '@ember-decorators/object/computed';
 
-export default class TransportationAnalysisModel extends Model {    
+export default class TransportationAnalysisModel extends Model {
   @belongsTo project;
+  @belongsTo solidWasteAnalysis;
 
   // Attributes
   @attr('number') trafficZone;
@@ -61,7 +62,7 @@ export default class TransportationAnalysisModel extends Model {
   get weightedAverageOver1() {
     return this.weightedAverage > 1;
   }
-  
+
   // Residential units
   @alias('project.totalUnits') residentialUnits;
   @computed('residentialUnits')

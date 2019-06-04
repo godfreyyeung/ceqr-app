@@ -1,10 +1,12 @@
-import { Factory, association } from 'ember-cli-mirage';
+import { Factory, association, trait } from 'ember-cli-mirage';
 
 export default Factory.extend({
-  project: association({
-    borough: 'Bronx'
+  banana: trait({
+    project: association({
+      borough: 'Bronx'
+    }),
+    transportation: association({
+      hasFastFood: true
+    })
   }),
-  transportationAnalysis: association({
-    hasFastFood: true
-  })
 });
