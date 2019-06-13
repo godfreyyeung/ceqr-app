@@ -371,7 +371,7 @@ export default Factory.extend({
       hs_capacity: 0,
       ms_capacity: 669,
       ps_capacity: 0,
-      subdistrict: 2,
+      subdistrict: 1,
       capacityFuture: 669,
       the_geom_webmercator: "0101000020110F0000E42C33224F675FC19D6ADE0878ED5241"
     },
@@ -400,7 +400,7 @@ export default Factory.extend({
       hs_capacity: 0,
       ms_capacity: 1320,
       ps_capacity: 0,
-      subdistrict: 2,
+      subdistrict: 1,
       capacityFuture: 1320,
       the_geom_webmercator: "0101000020110F000094EDF05E0D675FC18ADCF21497EE5241"
     },
@@ -429,7 +429,7 @@ export default Factory.extend({
       hs_capacity: 0,
       ms_capacity: 0,
       ps_capacity: 675,
-      subdistrict: 2,
+      subdistrict: 1,
       capacityFuture: 675,
       the_geom_webmercator: "0101000020110F00007A773D1E0B665FC1DC5E1F4749EE5241"
     },
@@ -458,7 +458,7 @@ export default Factory.extend({
       hs_capacity: 0,
       ms_capacity: 0,
       ps_capacity: 724,
-      subdistrict: 2,
+      subdistrict: 1,
       capacityFuture: 724,
       the_geom_webmercator: "0101000020110F0000259E75378B675FC11423610873ED5241"
     },
@@ -487,7 +487,7 @@ export default Factory.extend({
       hs_capacity: 0,
       ms_capacity: 0,
       ps_capacity: 383,
-      subdistrict: 2,
+      subdistrict: 1,
       capacityFuture: 383,
       the_geom_webmercator: "0101000020110F00002E23569B07675FC155F9F0D5E6EE5241"
     },
