@@ -40,7 +40,7 @@ export default class TransportationStudyAreaMapStudySelectionTogglerComponent ex
       // check that the feature has a geoid property
       if(geoid) {
         if(existingStudySelection.includes(geoid)){
-          existingStudySelection.popObject(geoid);
+          existingStudySelection.removeObject(geoid);
         } else {
           existingStudySelection.pushObject(geoid);
         }
