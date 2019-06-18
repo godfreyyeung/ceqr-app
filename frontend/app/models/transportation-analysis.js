@@ -13,6 +13,7 @@ export default class TransportationAnalysisModel extends Model {
   @attr({defaultValue: () => []}) requiredJtwStudySelection;
   // the geoids of additional user-defined study selection
   @attr({defaultValue: () => []}) jtwStudySelection;
+  @attr({defaultValue: () => ''}) nwLine;
 
   // Detailed Analysis trigger
   @computed(

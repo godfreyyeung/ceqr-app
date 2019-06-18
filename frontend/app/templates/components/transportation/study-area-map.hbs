@@ -7,7 +7,7 @@
   }} as |map|
 >
   <Mapbox::GeojsonSource
-    @geojson='{"type":"LineString","coordinates":[[-73.94,40.61],[-75.044424125091,40.9355047476123]]}'
+    @geojson={{analysis.nwLine}}
     @map={{map}}
   as |geojson-source|>
     <geojson-source.layer
