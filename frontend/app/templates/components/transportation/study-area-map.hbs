@@ -6,6 +6,22 @@
     center=(array -74 40.7071266)
   }} as |map|
 >
+  <Mapbox::GeojsonSource
+    @geojson='{"type":"LineString","coordinates":[[-73.94,40.61],[-75.044424125091,40.9355047476123]]}'
+    @map={{map}}
+  as |geojson-source|>
+    <geojson-source.layer
+      @id="test"
+      @layer={{hash
+        type="line"
+        paint=(hash
+          line-color="blue"
+          line-opacity=0.8
+          line-width=3
+        )
+      }}
+    />
+  </Mapbox::GeojsonSource>
   <Mapbox::CartoVectorSource @map={{map}} as |carto-source|>
     <carto-source.layer
       @id="tracts-line"

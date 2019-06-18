@@ -1,0 +1,14 @@
+<MapboxGlSource
+  @map={{map.instance}}
+  @sourceId={{this.elementId}}
+  @options={{this.mapboxSourceOptions}}
+/>
+{{yield
+  (hash
+    layer=(component
+      "mapbox/geojson-layer"
+      map=map
+      _parentElementId=this.elementId
+    )
+  )
+}}
