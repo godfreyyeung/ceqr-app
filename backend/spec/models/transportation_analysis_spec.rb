@@ -34,6 +34,14 @@ RSpec.describe TransportationAnalysis, type: :model do
     it "sets the geographic centroid of the study area" do
       expect(analysis.jtw_study_area_centroid).to be_present
     end
+
+    it "sets the intercardinal lines" do
+      expect(analysis.nw_line).to be_present
+      expect(analysis.ne_line).to be_present
+      expect(analysis.sw_line).to be_present
+      expect(analysis.se_line).to be_present
+    end
+
   end
 
   describe "#save" do
