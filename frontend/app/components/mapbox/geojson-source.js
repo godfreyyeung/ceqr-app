@@ -19,10 +19,7 @@ export default class MapboxGeojsonSourceComponent extends Component {
   get mapboxSourceOptions() {
     return {
       type: 'geojson',
-      data: {
-        type: "Feature",
-        geometry: JSON.parse(this.geojson)
-      },
+      data: JSON.parse(this.geojson),
       ...this.options,
     };
   }

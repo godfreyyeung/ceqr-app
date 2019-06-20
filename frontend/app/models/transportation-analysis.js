@@ -14,6 +14,22 @@ export default class TransportationAnalysisModel extends Model {
   // the geoids of additional user-defined study selection
   @attr({defaultValue: () => []}) jtwStudySelection;
   @attr({defaultValue: () => ''}) nwLine;
+  @attr({defaultValue: () => ''}) neLine;
+  @attr({defaultValue: () => ''}) seLine;
+  @attr({defaultValue: () => ''}) swLine;
+  @attr({defaultValue: () => []}) nwGeoids;
+  @attr({defaultValue: () => []}) neGeoids;
+  @attr({defaultValue: () => []}) swGeoids;
+  @attr({defaultValue: () => []}) seGeoids;
+
+  @computed('nwLine', 'neLine', 'neLine', 'nwLine')
+  get intercardinalLinesGeojson(){
+    return '{"type": "FeatureCollection", "features": [' + 
+      '{"type": "Feature", "geometry":' + this.nwLine + '},' +
+      '{"type": "Feature", "geometry":' + this.neLine + '},' +
+      '{"type": "Feature", "geometry":' + this.swLine + '},' +
+      '{"type": "Feature", "geometry":' + this.seLine + '}]}'
+  }
 
   // Detailed Analysis trigger
   @computed(

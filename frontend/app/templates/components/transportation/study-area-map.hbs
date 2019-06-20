@@ -7,7 +7,7 @@
   }} as |map|
 >
   <Mapbox::GeojsonSource
-    @geojson={{analysis.nwLine}}
+    @geojson={{analysis.intercardinalLinesGeojson}}
     @map={{map}}
   as |geojson-source|>
     <geojson-source.layer

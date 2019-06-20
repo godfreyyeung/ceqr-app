@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_18_154342) do
+ActiveRecord::Schema.define(version: 2019_06_19_143520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -97,6 +97,13 @@ ActiveRecord::Schema.define(version: 2019_06_18_154342) do
     t.string "required_jtw_study_selection", limit: 11, default: [], null: false, array: true
     t.string "jtw_study_selection", limit: 11, default: [], array: true
     t.string "nw_line"
+    t.string "ne_line"
+    t.string "sw_line"
+    t.string "se_line"
+    t.string "nw_geoids", limit: 11, default: [], array: true
+    t.string "ne_geoids", limit: 11, default: [], array: true
+    t.string "sw_geoids", limit: 11, default: [], array: true
+    t.string "se_geoids", limit: 11, default: [], array: true
   end
 
   create_table "users", force: :cascade do |t|
