@@ -2,10 +2,26 @@
   @name="study-area-map"
   @initOptions={{hash
     style="mapbox://styles/mapbox/light-v9"
-    zoom=13
-    center=(array -74 40.62)
+    zoom=9.2
+    center=(array -74 40.7071266)
   }} as |map|
 >
+  <Mapbox::GeojsonSource
+    @geojson={{analysis.intercardinalLinesGeojson}}
+    @map={{map}}
+  as |geojson-source|>
+    <geojson-source.layer
+      @id="test"
+      @layer={{hash
+        type="line"
+        paint=(hash
+          line-color="blue"
+          line-opacity=0.8
+          line-width=3
+        )
+      }}
+    />
+  </Mapbox::GeojsonSource>
   <Mapbox::CartoVectorSource @map={{map}} as |carto-source|>
     <carto-source.layer
       @id="tracts-highlight"
@@ -22,7 +38,7 @@
         @map={{map}}
         @layerId={{layer.layerId}}
         @filterById="geoid"
-        @featureIds={{array "36047020800"}}
+        @featureIds={{this.highlightedFeatureIds}}
       />
     </carto-source.layer>
     <carto-source.layer
