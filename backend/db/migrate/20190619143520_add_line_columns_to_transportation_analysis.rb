@@ -1,9 +1,9 @@
 class AddLineColumnsToTransportationAnalysis < ActiveRecord::Migration[5.2]
   def change
-    add_column :transportation_analyses, :nw_line, :string
-    add_column :transportation_analyses, :ne_line, :string
-    add_column :transportation_analyses, :sw_line, :string
-    add_column :transportation_analyses, :se_line, :string
+    add_column :transportation_analyses, :nw_line_geojson, :string
+    add_column :transportation_analyses, :ne_line_geojson, :string
+    add_column :transportation_analyses, :sw_line_geojson, :string
+    add_column :transportation_analyses, :se_line_geojson, :string
 
     TransportationAnalysis.all.each do |a|
       a.send(:compute_study_area)

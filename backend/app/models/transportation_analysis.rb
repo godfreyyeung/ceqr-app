@@ -63,10 +63,10 @@ class TransportationAnalysis < ApplicationRecord
       se_line_sql = get_sql_of_line_at_azimuth_from_centroid(self.jtw_study_area_centroid, "225")
       se_line =  ActiveRecord::Base.connection.execute(se_line_sql).first["st_asgeojson"]
 
-      self.nw_line = nw_line
-      self.ne_line = ne_line
-      self.sw_line = sw_line
-      self.se_line = se_line
+      self.nw_line_geojson = nw_line
+      self.ne_line_geojson = ne_line
+      self.sw_line_geojson = sw_line
+      self.se_line_geojson = se_line
 
     end
 

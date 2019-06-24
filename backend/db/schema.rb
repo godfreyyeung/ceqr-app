@@ -96,10 +96,10 @@ ActiveRecord::Schema.define(version: 2019_06_19_143520) do
     t.geometry "jtw_study_area_centroid", limit: {:srid=>4326, :type=>"st_point"}, null: false
     t.string "required_jtw_study_selection", limit: 11, default: [], null: false, array: true
     t.string "jtw_study_selection", limit: 11, default: [], array: true
-    t.string "nw_line"
-    t.string "ne_line"
-    t.string "sw_line"
-    t.string "se_line"
+    t.string "nw_line_geojson"
+    t.string "ne_line_geojson"
+    t.string "sw_line_geojson"
+    t.string "se_line_geojson"
     t.string "nw_geoids", limit: 11, default: [], array: true
     t.string "ne_geoids", limit: 11, default: [], array: true
     t.string "sw_geoids", limit: 11, default: [], array: true
