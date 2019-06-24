@@ -76,21 +76,25 @@ class TransportationAnalysis < ApplicationRecord
       self.se_line_geojson = se_line_geojson
     end
 
-    def compute_quadrant_polygons
-      n_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.ne_pt_text, self.nw_pt_text)
-      n_polygon_geojson =  ActiveRecord::Base.connection.execute(n_polygon_sql).first["st_asgeojson"]
-      e_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.ne_pt_text, self.se_pt_text)
-      e_polygon_geojson =  ActiveRecord::Base.connection.execute(e_polygon_sql).first["st_asgeojson"]
-      s_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.sw_pt_text, self.se_pt_text)
-      s_polygon_geojson =  ActiveRecord::Base.connection.execute(s_polygon_sql).first["st_asgeojson"]
-      w_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.sw_pt_text, self.nw_pt_text)
-      w_polygon_geojson =  ActiveRecord::Base.connection.execute(w_polygon_sql).first["st_asgeojson"]
+    # def compute_quadrant_polygons
+    #   n_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.ne_pt_text, self.nw_pt_text)
+    #   n_polygon_geojson =  ActiveRecord::Base.connection.execute(n_polygon_sql).first["st_asgeojson"]
+    #   e_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.ne_pt_text, self.se_pt_text)
+    #   e_polygon_geojson =  ActiveRecord::Base.connection.execute(e_polygon_sql).first["st_asgeojson"]
+    #   s_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.sw_pt_text, self.se_pt_text)
+    #   s_polygon_geojson =  ActiveRecord::Base.connection.execute(s_polygon_sql).first["st_asgeojson"]
+    #   w_polygon_sql = get_sql_of_quadrant(self.centroid_pt, self.sw_pt_text, self.nw_pt_text)
+    #   w_polygon_geojson =  ActiveRecord::Base.connection.execute(w_polygon_sql).first["st_asgeojson"]
 
-      self.n_polygon_geojson = n_polygon_geojson
-      self.e_polygon_geojson = e_polygon_geojson
-      self.s_polygon_geojson = s_polygon_geojson
-      self.w_polygon_geojson = w_polygon_geojson
-    end
+    #   self.n_polygon_geojson = n_polygon_geojson
+    #   self.e_polygon_geojson = e_polygon_geojson
+    #   self.s_polygon_geojson = s_polygon_geojson
+    #   self.w_polygon_geojson = w_polygon_geojson
+    # end
+
+    # def get_centroid_pt_text(centroid)
+    #   return "'Point(" << centroid.x.to_s << " " << centroid.y.to_s << ")'"
+    # end
 
     def get_centroid_pt_text(centroid)
       return "'Point(" << centroid.x.to_s << " " << centroid.y.to_s << ")'"
@@ -127,29 +131,29 @@ class TransportationAnalysis < ApplicationRecord
       return line_sql
     end
 
-    def get_sql_of_quadrant(centroid, pt_a, pt_b)
-      quadrant_sql =  "SELECT ST_AsGeoJSON("
-      quadrant_sql << "  ST_Polygon("
-      quadrant_sql << "   ST_MakeLine(ARRAY["
-      quadrant_sql << "       ST_GeomFromText("
-      quadrant_sql <<             centroid 
-      quadrant_sql << "         , 4326),"
-      quadrant_sql << "       St_GeomFromText("
-      quadrant_sql <<             pt_a
-      quadrant_sql << "         , 4326),"
-      quadrant_sql << "       St_GeomFromText("
-      quadrant_sql <<             pt_v
-      quadrant_sql << "         , 4326),"
-      quadrant_sql << "       ST_GeomFromText("
-      quadrant_sql <<             centroid
-      quadrant_sql << "         , 4326)z,"
-      quadrant_sql << "     ]"
-      quadrant_sql << "   ),"
-      quadrant_sql << "   4326"
-      quadrant_sql << "  )"
+    # def get_sql_of_quadrant(centroid, pt_a, pt_b)
+    #   quadrant_sql =  "SELECT ST_AsGeoJSON("
+    #   quadrant_sql << "  ST_Polygon("
+    #   quadrant_sql << "   ST_MakeLine(ARRAY["
+    #   quadrant_sql << "       ST_GeomFromText("
+    #   quadrant_sql <<             centroid 
+    #   quadrant_sql << "         , 4326),"
+    #   quadrant_sql << "       St_GeomFromText("
+    #   quadrant_sql <<             pt_a
+    #   quadrant_sql << "         , 4326),"
+    #   quadrant_sql << "       St_GeomFromText("
+    #   quadrant_sql <<             pt_v
+    #   quadrant_sql << "         , 4326),"
+    #   quadrant_sql << "       ST_GeomFromText("
+    #   quadrant_sql <<             centroid
+    #   quadrant_sql << "         , 4326)z,"
+    #   quadrant_sql << "     ]"
+    #   quadrant_sql << "   ),"
+    #   quadrant_sql << "   4326"
+    #   quadrant_sql << "  )"
 
-      return quadrant_sql
-    end
+    #   return quadrant_sql
+    # end
 
     # def get_quadrant_geoids(quadrant_polygon_geojson)
     #   line_sql = "SELECT geoid FROM ctpp_censustract_centroids WHERE"
