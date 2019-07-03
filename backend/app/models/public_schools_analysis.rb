@@ -1,8 +1,9 @@
 class PublicSchoolsAnalysis < ApplicationRecord
   after_create :set_subdistricts
   after_create :set_bluebook
-  after_create :set_future_enrollment_projections
+  after_create :set_future_enrollment_multipliers
   after_create :set_hs_projections
+  after_create :set_future_enrollment_projections
   # Missing set_subdistricts on project update
 
   belongs_to :project
@@ -53,14 +54,14 @@ class PublicSchoolsAnalysis < ApplicationRecord
     self.save!
   end
 
-  def set_future_enrollment_projections
+  def set_future_enrollment_multipliers
     subdistricts = self.subdistricts_from_db
 
     district_subdistrict_pairs = subdistricts.map { |sd| "(#{sd['district']},#{sd['subdistrict']})" }
 
     enrollment_pct_by_sd = Db::EnrollmentPctBySd.enrollment_percent_by_subdistrict(district_subdistrict_pairs)
     #
-    self.future_enrollment_projections = enrollment_pct_by_sd.map do |e|
+    self.future_enrollment_multipliers = enrollment_pct_by_sd.map do |e|
       {
         level: e[:level],
         district: e[:district],
@@ -80,11 +81,29 @@ class PublicSchoolsAnalysis < ApplicationRecord
     #   {
     #     hs: e[:hs],
     #     year: e[:year],
-    #     borough: project.borough,
+    #     borough: e[:borough],
     #   }
     # end
 
-    self.hs_projections = 'boop'
+    self.save!
+
+  end
+
+  def set_future_enrollment_projections
+    subdistricts = self.subdistricts_from_db
+
+    districts = subdistricts.map { |d| "#{d['district']}" }
+
+    enrollment_projection_by_sd = Db::EnrollmentProjectionBySd.enrollment_projection_by_subdistrict(project.build_year, districts)
+    #
+    self.future_enrollment_projections = enrollment_projection_by_sd.map do |e|
+      {
+        ms: e[:ms],
+        ps: e[:ps]
+        district: e[:district],
+        school_year: e[:school_year],
+      }
+    end
 
     self.save!
 
