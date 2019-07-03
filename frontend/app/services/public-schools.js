@@ -221,14 +221,14 @@ export default Service.extend({
     this.set('analysis.lcgms', lcgmsBuildings);
   }),
 
-  setEnrollmentMultipliers: task(function*() {
-    let enrollmentMultipliers = yield carto.SQL(`
-      SELECT *
-      FROM ${this.analysis.dataTables.cartoTables.enrollmentPctBySd}
-      WHERE (district, subdistrict) IN (VALUES ${this.analysis.subdistrictSqlPairs.join(',')})
-    `);
-    this.set('analysis.futureEnrollmentMultipliers', enrollmentMultipliers);
-  }),
+  // setEnrollmentMultipliers: task(function*() {
+  //   let enrollmentMultipliers = yield carto.SQL(`
+  //     SELECT *
+  //     FROM ${this.analysis.dataTables.cartoTables.enrollmentPctBySd}
+  //     WHERE (district, subdistrict) IN (VALUES ${this.analysis.subdistrictSqlPairs.join(',')})
+  //   `);
+  //   this.set('analysis.futureEnrollmentMultipliers', enrollmentMultipliers);
+  // }),
 
   // setProjections: task(function*() {
   //   let enrollmentProjections = yield carto.SQL(`
@@ -259,27 +259,27 @@ export default Service.extend({
   //   this.set('analysis.hsProjections', hsProjections);
   // }),
 
-  setStudentsFromNewHousing: task(function*() {
-    let studentsFromNewHousing = yield carto.SQL(`
-      SELECT
-        new_students AS students,
-        district,
-        subdistrict,
-        org_level AS level
-      FROM ${this.analysis.dataTables.cartoTables.housingPipelineSd}
-      WHERE (district, subdistrict) IN (VALUES ${this.analysis.subdistrictSqlPairs.join(',')})
-    `);
-    this.set('analysis.futureEnrollmentNewHousing', studentsFromNewHousing);
-
-    let hsStudentsFromHousing = yield carto.SQL(`
-      SELECT
-        borough,
-        new_students AS hs_students
-      FROM ${this.analysis.dataTables.cartoTables.housingPipelineBoro}
-      WHERE LOWER(borough) = LOWER('${this.analysis.borough}')
-    `);
-    this.set('analysis.hsStudentsFromHousing', hsStudentsFromHousing[0].hs_students)
-  }),
+  // setStudentsFromNewHousing: task(function*() {
+  //   let studentsFromNewHousing = yield carto.SQL(`
+  //     SELECT
+  //       new_students AS students,
+  //       district,
+  //       subdistrict,
+  //       org_level AS level
+  //     FROM ${this.analysis.dataTables.cartoTables.housingPipelineSd}
+  //     WHERE (district, subdistrict) IN (VALUES ${this.analysis.subdistrictSqlPairs.join(',')})
+  //   `);
+  //   this.set('analysis.futureEnrollmentNewHousing', studentsFromNewHousing);
+  //
+  //   let hsStudentsFromHousing = yield carto.SQL(`
+  //     SELECT
+  //       borough,
+  //       new_students AS hs_students
+  //     FROM ${this.analysis.dataTables.cartoTables.housingPipelineBoro}
+  //     WHERE LOWER(borough) = LOWER('${this.analysis.borough}')
+  //   `);
+  //   this.set('analysis.hsStudentsFromHousing', hsStudentsFromHousing[0].hs_students)
+  // }),
 
   setSCAProjects: task(function*() {
     let scaProjects = yield carto.SQL(`

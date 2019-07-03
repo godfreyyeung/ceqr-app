@@ -5,6 +5,8 @@ class PublicSchoolsAnalysis < ApplicationRecord
   after_create :set_hs_projections
   after_create :set_future_enrollment_projections
   after_create :set_hs_students_from_housing
+  after_create :set_future_enrollment_new_housing
+  after_create :set_doe_util_changes
   # Missing set_subdistricts on project update
 
   belongs_to :project
@@ -142,6 +144,30 @@ class PublicSchoolsAnalysis < ApplicationRecord
   self.save!
 
 end
+
+# def set_doe_util_changes
+#
+# # bldg_id IN (${this.analysis.buildingsBldgIds.map(b => `'${b}'`).join(',')})
+#
+#   doe_significant_utilization_changes = Db::DoeSignificantUtilizationChange.doe_util_changes(buildingsBldgIds)
+# 
+#   self.doe_util_changes = doe_significant_utilization_changes.map do |d|
+#     {
+#       url: d[:url],
+#       title: d[:title],
+#       org_id: d[:org_id],
+#       bldg_id: d[:bldg_id],
+#       vote_date: d[:vote_date],
+#       at_scale_year: d[:at_scale_year],
+#       at_scale_enroll: d[:at_scale_enroll],
+#       bldg_id_additional: d[:bldg_id_additional]
+#     }
+#   end
+#
+#   self.save!
+#
+# end
+
 
 
 ### PRIVATE METHODS
