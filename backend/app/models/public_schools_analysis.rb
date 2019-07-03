@@ -123,6 +123,26 @@ class PublicSchoolsAnalysis < ApplicationRecord
 
   end
 
+  def set_future_enrollment_new_housing
+  subdistricts = self.subdistricts_from_db
+
+  district_subdistrict_pairs = subdistricts.map { |sd| "(#{sd['district']},#{sd['subdistrict']})" }
+
+  future_enrollment_new_housing_SQL = Db::HousingPipelineBySd.housing_pipeline_by_sd(district_subdistrict_pairs)
+  #
+  self.future_enrollment_new_housing = future_enrollment_new_housing_SQL.map do |e|
+    {
+      level: e[:level],
+      district: e[:district],
+      students: e[:students],
+      subdistrict: e[:subdistrict]
+    }
+  end
+
+  self.save!
+
+end
+
 
 ### PRIVATE METHODS
 
