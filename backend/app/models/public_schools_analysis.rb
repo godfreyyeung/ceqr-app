@@ -4,6 +4,7 @@ class PublicSchoolsAnalysis < ApplicationRecord
   after_create :set_future_enrollment_multipliers
   after_create :set_hs_projections
   after_create :set_future_enrollment_projections
+  after_create :set_hs_students_from_housing
   # Missing set_subdistricts on project update
 
   belongs_to :project
@@ -66,7 +67,7 @@ class PublicSchoolsAnalysis < ApplicationRecord
         level: e[:level],
         district: e[:district],
         subdistrict: e[:subdistrict],
-        multiplier: e[:multiplier],
+        multiplier: e[:multiplier]
       }
     end
 
@@ -75,15 +76,15 @@ class PublicSchoolsAnalysis < ApplicationRecord
   end
 
   def set_hs_projections
-    enrollment_projection_by_boro = Db::EnrollmentProjectionByBoro.enrollment_projection_by_boro(project.build_year, 'brooklyn')
+    enrollment_projection_by_boro = Db::EnrollmentProjectionByBoro.enrollment_projection_by_boro(project.build_year, project.borough)
     #
-    # self.hs_projections = enrollment_projection_by_boro.map do |e|
-    #   {
-    #     hs: e[:hs],
-    #     year: e[:year],
-    #     borough: e[:borough],
-    #   }
-    # end
+    self.hs_projections = enrollment_projection_by_boro.map do |e|
+      {
+        hs: e[:hs],
+        year: e[:year],
+        borough: e[:borough]
+      }
+    end
 
     self.save!
 
@@ -96,14 +97,27 @@ class PublicSchoolsAnalysis < ApplicationRecord
 
     enrollment_projection_by_sd = Db::EnrollmentProjectionBySd.enrollment_projection_by_subdistrict(project.build_year, districts)
     #
-    self.future_enrollment_projections = enrollment_projection_by_sd.map do |e|
-      {
-        ms: e[:ms],
-        ps: e[:ps]
-        district: e[:district],
-        school_year: e[:school_year],
-      }
-    end
+    # self.future_enrollment_projections = enrollment_projection_by_sd.map do |e|
+    #   {
+    #     ms: e[:ms],
+    #     ps: e[:ps]
+    #     district: e[:district],
+    #     school_year: e[:school_year]
+    #   }
+    # end
+
+    self.future_enrollment_projections = 'boop'
+
+    self.save!
+
+  end
+
+  def set_hs_students_from_housing
+    students_from_housing = Db::HousingPipelineByBoro.high_school_students_from_housing(project.borough)
+
+    hs_students = students_from_housing.map &:hs_students
+
+    self.hs_students_from_housing = hs_students.first
 
     self.save!
 

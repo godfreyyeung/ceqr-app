@@ -230,34 +230,34 @@ export default Service.extend({
     this.set('analysis.futureEnrollmentMultipliers', enrollmentMultipliers);
   }),
 
-  setProjections: task(function*() {
-    let enrollmentProjections = yield carto.SQL(`
-      SELECT
-        ps,
-        ms,
-        district,
-        school_year
-      FROM ${this.analysis.dataTables.cartoTables.enrollmentProjectionsSd}
-      WHERE
-        school_year LIKE '${this.analysis.buildYearMaxed}%25'
-        AND
-        district IN (${this.analysis.subdistricts.map((d) => `'${d.district}'`).join(',')})
-    `);
-    this.set('analysis.futureEnrollmentProjections', enrollmentProjections);
-
-    let hsProjections = yield carto.SQL(`
-      SELECT
-        borough,
-        year,
-        hs
-      FROM ${this.analysis.dataTables.cartoTables.enrollmentProjectionsBoro}
-      WHERE
-        year = ${this.analysis.buildYearMaxed}
-        AND
-        LOWER(borough) = LOWER('${this.analysis.borough}')
-    `);
-    this.set('analysis.hsProjections', hsProjections);
-  }),
+  // setProjections: task(function*() {
+  //   let enrollmentProjections = yield carto.SQL(`
+  //     SELECT
+  //       ps,
+  //       ms,
+  //       district,
+  //       school_year
+  //     FROM ${this.analysis.dataTables.cartoTables.enrollmentProjectionsSd}
+  //     WHERE
+  //       school_year LIKE '${this.analysis.buildYearMaxed}%25'
+  //       AND
+  //       district IN (${this.analysis.subdistricts.map((d) => `'${d.district}'`).join(',')})
+  //   `);
+  //   this.set('analysis.futureEnrollmentProjections', enrollmentProjections);
+  //
+  //   let hsProjections = yield carto.SQL(`
+  //     SELECT
+  //       borough,
+  //       year,
+  //       hs
+  //     FROM ${this.analysis.dataTables.cartoTables.enrollmentProjectionsBoro}
+  //     WHERE
+  //       year = ${this.analysis.buildYearMaxed}
+  //       AND
+  //       LOWER(borough) = LOWER('${this.analysis.borough}')
+  //   `);
+  //   this.set('analysis.hsProjections', hsProjections);
+  // }),
 
   setStudentsFromNewHousing: task(function*() {
     let studentsFromNewHousing = yield carto.SQL(`
