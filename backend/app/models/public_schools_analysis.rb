@@ -1,6 +1,7 @@
 class PublicSchoolsAnalysis < ApplicationRecord
   after_create :set_subdistricts
   after_create :set_bluebook
+  after_create :set_future_enrollment_projections
   # Missing set_subdistricts on project update
 
   belongs_to :project
@@ -49,6 +50,26 @@ class PublicSchoolsAnalysis < ApplicationRecord
     self.bluebook = new_bluebook
 
     self.save!
+  end
+
+  def set_future_enrollment_projections
+    subdistricts = self.subdistricts_from_db
+
+    district_subdistrict_pairs = subdistricts.map { |sd| "(#{sd['district']},#{sd['subdistrict']})" }
+
+    enrollment_pct_by_sd = Db::EnrollmentPctBySd.enrollment_percent_by_subdistrict(district_subdistrict_pairs)
+    #
+    self.future_enrollment_projections = enrollment_pct_by_sd.map do |e|
+      {
+        level: e[:level],
+        district: e[:district],
+        subdistrict: e[:subdistrict],
+        multiplier: e[:multiplier],
+      }
+    end
+
+    self.save!
+
   end
 
 
