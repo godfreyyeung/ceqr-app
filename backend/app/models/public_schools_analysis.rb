@@ -2,6 +2,7 @@ class PublicSchoolsAnalysis < ApplicationRecord
   after_create :set_subdistricts
   after_create :set_bluebook
   after_create :set_future_enrollment_projections
+  after_create :set_hs_projections
   # Missing set_subdistricts on project update
 
   belongs_to :project
@@ -67,6 +68,23 @@ class PublicSchoolsAnalysis < ApplicationRecord
         multiplier: e[:multiplier],
       }
     end
+
+    self.save!
+
+  end
+
+  def set_hs_projections
+    enrollment_projection_by_boro = Db::EnrollmentProjectionByBoro.enrollment_projection_by_boro(project.build_year, 'brooklyn')
+    #
+    # self.hs_projections = enrollment_projection_by_boro.map do |e|
+    #   {
+    #     hs: e[:hs],
+    #     year: e[:year],
+    #     borough: project.borough,
+    #   }
+    # end
+
+    self.hs_projections = 'boop'
 
     self.save!
 
