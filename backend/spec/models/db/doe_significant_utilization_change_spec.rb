@@ -22,4 +22,14 @@ RSpec.describe Db::DoeSignificantUtilizationChange, type: :model do
       test_version("062018")
     end
   end
+
+  describe "#doe_util_changes_matching_with_building_ids" do
+    it "returns an array of doe util changes" do
+      buildingsBldgIds = "'M868'"
+
+      doe_util_changes = Db::DoeSignificantUtilizationChange.doe_util_changes_matching_with_building_ids(buildingsBldgIds)
+
+      expect(doe_util_changes[0].bldg_id).to eq('M868')
+    end
+  end
 end

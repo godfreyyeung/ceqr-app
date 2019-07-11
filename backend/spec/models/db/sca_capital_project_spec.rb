@@ -15,7 +15,7 @@ RSpec.describe Db::ScaCapitalProject, type: :model do
       expect(db.pct_is).to be_a Float
       expect(db.pct_hs).to be_a Float
       expect(db.total_est_cost).to be_a Float
-      expect(db.funding_current_budget).to be_a Float # this attribute should not 
+      expect(db.funding_current_budget).to be_a Float # this attribute should not
       expect(db.funding_previous).to be_a Float
       expect(db.pct_funded).to be_a Float
 
@@ -27,9 +27,23 @@ RSpec.describe Db::ScaCapitalProject, type: :model do
       expect(db.geom.geometry_type).to be RGeo::Feature::Point
       expect(db.geom.srid).to eq(4326)
     end
-    
+
     it "2018" do
       test_version(2018)
+    end
+  end
+
+  describe "#sca_projects_intersecting_subdistrict_geom" do
+    it "returns an array of SCA schools that match subdistrict" do
+      subdistrict_pairs = ["(2,3)"]
+
+      subdistricts = Db::SchoolSubdistrict.for_subdistrict_pairs(subdistrict_pairs)
+
+      geometry = subdistricts.map {|x| x[:geom]}
+
+      sca_schools = Db::ScaCapitalProject.sca_projects_intersecting_subdistrict_geom(geometry.first)
+
+      expect(sca_schools[0].project_dsf).to eq('DSF0000424314')
     end
   end
 end

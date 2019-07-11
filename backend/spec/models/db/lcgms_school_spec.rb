@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Db::LcgmsSchool, type: :model do  
+RSpec.describe Db::LcgmsSchool, type: :model do
   describe "attributes by version" do
     def test_version(version)
       Db::LcgmsSchool.version = version
@@ -29,4 +29,19 @@ RSpec.describe Db::LcgmsSchool, type: :model do
       test_version(2018)
     end
   end
+
+  describe "#lcgms_intersecting_subdistrict_geom" do
+    it "returns an array of lcmgs schools that match subdistrict" do
+      subdistrict_pairs = ["(9,1)"]
+
+      subdistricts = Db::SchoolSubdistrict.for_subdistrict_pairs(subdistrict_pairs)
+
+      geometry = subdistricts.map {|x| x[:geom]}
+
+      lcgms_schools = Db::LcgmsSchool.lcgms_intersecting_subdistrict_geom(geometry.first)
+
+      expect(lcgms_schools[0].bldg_id).to eq('X145')
+    end
+  end
+
 end

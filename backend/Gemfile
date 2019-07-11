@@ -55,7 +55,7 @@ group :development, :test do
   gem 'rspec-activemodel-mocks'
   gem 'lograge'
 
-  # This is a jsonapi test helper tied to another JSONAPI (previous JSONAPI Suite, now called Graphiti) ruby gem. 
+  # This is a jsonapi test helper tied to another JSONAPI (previous JSONAPI Suite, now called Graphiti) ruby gem.
   # It was the most elegant, in my opinion.
   # gem 'graphiti_spec_helpers'
 
