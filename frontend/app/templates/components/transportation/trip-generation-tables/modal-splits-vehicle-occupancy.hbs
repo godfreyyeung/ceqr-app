@@ -54,7 +54,7 @@
               {{round (get-aggregate-value this.selectedCensusTractData (array 'vehicle_occupancy')) decimals=2}}
             </td>
             <td>
-              <div class="ui input transparent edit-cell">
+              <div class="ui input edit-cell">
                 {{input type="number" min=0 value=this.analysis.taxiVehicleOccupancy change=(action "saveAnalysis")}}
               </div>
             </td>
