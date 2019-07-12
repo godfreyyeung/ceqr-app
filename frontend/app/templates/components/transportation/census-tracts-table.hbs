@@ -56,12 +56,23 @@
             @variables={{array (if this.isRJTW "workers" "population")}}
             data-test-censustracts-table-baseunit
           />
-          <Transportation::CensusTractsTable::ValueAndPercentRow
-            @title={{get this.modeLookup "vehicle_occupancy"}}
-            @allModalSplitData={{censusTracts}}
-            @variables={{array "vehicle_occupancy"}}
-            @noPercent=true
-          />
+          <tr style="background-color: rgb(249, 250, 251)">
+            <td colspan="{{add 1 (mult censusTracts.length 2)}}"></td>
+            <td colspan="2">Average</td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;&nbsp;Vehicle Occupancy</td>
+            {{#each censusTracts as |modalSplit|}}
+              <td>{{get-split-value modalSplit (array "vehicle_occupancy") true}}</td>
+              <td>
+                  -
+              </td>
+            {{/each}}
+            <td>{{round (div (get-aggregate-value censusTracts (array "vehicle_occupancy")) censusTracts.length) decimals=2}}</td>
+            <td>
+              -
+            </td>
+          </tr>
         {{/let}}
       </tbody>
     </table>
