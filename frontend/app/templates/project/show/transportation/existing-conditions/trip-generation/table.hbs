@@ -1,23 +1,10 @@
 <div class="row">
   <div class="sixteen wide column">
-    <div class="ui top clearing segment">
-      <div class="ui secondary menu">
-        <a
-          class="item {{unless this.isRJTW "active"}}"
-          data-test-censustracts-table-isrjtw="false"
-          {{action (mut this.isRJTW) false}}
-        >
-          Residential
-        </a>
-        <a
-          class="item {{if this.isRJTW "active"}}"
-          data-test-censustracts-table-isrjtw="true"
-          {{action (mut this.isRJTW) true}}
-        >
-          Offices
-        </a>
-      </div>
-    </div>
+    <Transportation::DataSourceToggle
+      @switch={{this.isRJTW}}
+      @falseLabel="Residential"
+      @trueLabel="Offices"
+    />
   </div>
 </div>
 <div class="row">
