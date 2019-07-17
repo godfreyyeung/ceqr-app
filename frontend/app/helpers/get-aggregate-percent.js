@@ -1,9 +1,12 @@
 import { helper } from '@ember/component/helper';
 
 /** 
- * Helper for CensusTractsTable component that calculates an aggregate modal split percent 
+ * Helper that calculates an aggregate modal split percent 
  * for a full set of modal split data for all census tracts in a study selection.
  * Accepts multiple variables, so modal splits for a random subset of modes can be calculated.
+ * @param {Object[]} allModalSplitData - array of Census Tract ModalSplits
+ * @param {String[]} variables - array of mode variable codes 
+ * @param {Bool} includePctSign -- set to True to return a string with % symbol appended. False for integer value.
  */
 export function getAggregatePercent(params/*, hash*/) {
   const [allModalSplitData, variables, includePctSign] = params;
