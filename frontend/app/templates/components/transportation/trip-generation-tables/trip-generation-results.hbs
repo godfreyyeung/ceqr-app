@@ -67,207 +67,121 @@
                 {{#with this.analysis as |ta|}}
                   {{#with (div (get (get ta.temporalDistributions time) 'percent') 100) as |temporalDistPct|}}
                     {{#if (and (not-eq time "saturday") (not-eq inOutOrTotal.key "total"))}}
-                      {{#with (hash
-                        trans_auto_total=(round (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_auto_total))
-                        trans_taxi=(round (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_taxi))
-                        trans_public_bus=(round (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_public_bus))
-                        trans_public_subway=(round (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_public_subway))
-                        trans_walk=(round (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_walk))
-                        ) as |modeCalcs|}}
-                          {{#each this.modalSplitVariablesSubset as |mode|}}
-                            <td>
-                              {{get modeCalcs mode}}
-                            </td>
-                          {{/each}}
-                          <td>
-                            {{round (add modeCalcs.trans_auto_total modeCalcs.trans_taxi modeCalcs.trans_public_bus modeCalcs.trans_public_subway modeCalcs.trans_walk)}}
-                          </td>
-                          {{#with (hash 
-                            auto=(round (div modeCalcs.trans_auto_total modeAggPcts.vehicle_occupancy))
-                            taxi=(round (div modeCalcs.trans_taxi ta.taxiVehicleOccupancy))
-                          )
-                          as |vehTripCalcs|}}
-                            <td>
-                              {{vehTripCalcs.auto}}
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                            <td>
-                              -
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{add vehTripCalcs.auto vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                          {{/with}}
-                      {{/with}}
+                      {{#each this.modalSplitVariablesSubset as |mode|}}
+                        <td>
+                          {{round (get (get (get this.weekdayModeCalcs time) inOutOrTotal.key) mode)}}
+                        </td>
+                      {{/each}}
+                      <td>
+                        {{round (get (get this.weekdayModesTotals time) inOutOrTotal.key)}}
+                      </td>
+                      <td>
+                        {{round (get (get this.weekdayAutoVehicleTripCalcs time) inOutOrTotal.key)}}
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round (get (get this.weekdayTaxiVehicleTripCalcs time) inOutOrTotal.key)}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
+                      <td>
+                        -
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round (get (get weekdayVehicleTripTotals time) inOutOrTotal.key)}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
                     {{else if (not-eq time "saturday")}}
-                      {{#with (hash
-                        trans_auto_total=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_auto_total)
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_auto_total)
-                          ))
-                        trans_taxi=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_taxi)
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_taxi)
-                          ))
-                        trans_public_bus=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_public_bus)
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_public_bus)
-                          ))
-                        trans_public_subway=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_public_subway)
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_public_subway)
-                          ))
-                        trans_walk=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_walk)
-                            (mult ta.residentialUnits ta.dailyTripRate.weekday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_walk)
-                          ))
-                        ) as |modeTotalCalcs|}}
-                          {{#each this.modalSplitVariablesSubset as |mode|}}
-                            <td>
-                              {{get modeTotalCalcs mode}}
-                            </td>
-                          {{/each}}
-                          <td>
-                            {{round (add modeTotalCalcs.trans_auto_total modeTotalCalcs.trans_taxi modeTotalCalcs.trans_public_bus modeTotalCalcs.trans_public_subway modeTotalCalcs.trans_walk)}}
-                          </td>
-                          {{#with (hash 
-                            auto=(round (div modeTotalCalcs.trans_auto_total modeAggPcts.vehicle_occupancy))
-                            taxi=(round (div modeTotalCalcs.trans_taxi ta.taxiVehicleOccupancy))
-                          )
-                          as |vehTripCalcs|}}
-                            <td>
-                              {{vehTripCalcs.auto}}
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                            <td>
-                              -
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{add vehTripCalcs.auto vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                          {{/with}}
-                      {{/with}}
+                      {{#each this.modalSplitVariablesSubset as |mode|}}
+                        <td>
+                          {{round (get (get this.totalsOfWeekdayMode time) mode)}}
+                        </td>
+                      {{/each}}
+                      <td>
+                        {{round (get this.totalsOfTotalsOfWeekdayMode time)}}
+                      </td>
+                      <td>
+                        {{round (get this.totalsOfWeekdayAutoVehicleTrip time)}}
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round (get this.totalsOfWeekdayTaxiVehicleTrip time)}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
+                      <td>
+                        -
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round (get this.totalsOfTotalsOfWeekdayVehicleTrip time)}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
                     {{else if (not-eq inOutOrTotal.key "total")}}
-                      {{#with (hash
-                        trans_auto_total=(round (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_auto_total))
-                        trans_taxi=(round (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_taxi))
-                        trans_public_bus=(round (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_public_bus))
-                        trans_public_subway=(round (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_public_subway))
-                        trans_walk=(round (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) inOutOrTotal.key) 100) modeAggPcts.trans_walk))
-                        ) as |modeCalcs|}}
-                          {{#each this.modalSplitVariablesSubset as |mode|}}
-                            <td>
-                              {{get modeCalcs mode}}
-                            </td>
-                          {{/each}}
-                          <td>
-                            {{round (add modeCalcs.trans_auto_total modeCalcs.trans_taxi modeCalcs.trans_public_bus modeCalcs.trans_public_subway modeCalcs.trans_walk)}}
-                          </td>
-                          {{#with (hash 
-                            auto=(round (div modeCalcs.trans_auto_total modeAggPcts.vehicle_occupancy))
-                            taxi=(round (div modeCalcs.trans_taxi ta.taxiVehicleOccupancy))
-                          )
-                          as |vehTripCalcs|}}
-                            <td>
-                              {{vehTripCalcs.auto}}
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                            <td>
-                              -
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{add vehTripCalcs.auto vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                          {{/with}}
-                      {{/with}}
+                      {{#each this.modalSplitVariablesSubset as |mode|}}
+                        <td>
+                          {{round (get (get this.saturdayModeCalcs inOutOrTotal.key) mode)}}
+                        </td>
+                      {{/each}}
+                      <td>
+                        {{round (get this.saturdayModesTotals inOutOrTotal.key)}}
+                      </td>
+                      <td>
+                        {{round (get this.saturdayAutoVehicleTripCalcs inOutOrTotal.key)}}
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round (get this.saturdayTaxiVehicleTripCalcs inOutOrTotal.key)}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
+                      <td>
+                        -
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round (get this.saturdayVehicleTripTotals inOutOrTotal.key)}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
                     {{else}}
-                      {{#with (hash
-                        trans_auto_total=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_auto_total)
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_auto_total)
-                          ))
-                        trans_taxi=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_taxi)
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_taxi)
-                          ))
-                        trans_public_bus=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_public_bus)
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_public_bus)
-                          ))
-                        trans_public_subway=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_public_subway)
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_public_subway)
-                          ))
-                        trans_walk=(round (add 
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'in') 100) modeAggPcts.trans_walk)
-                            (mult ta.residentialUnits ta.dailyTripRate.saturday.rate temporalDistPct (div (get (get ta.inOutDists time) 'out') 100) modeAggPcts.trans_walk)
-                          ))
-                        ) as |modeTotalCalcs|}}
-                          {{#each this.modalSplitVariablesSubset as |mode|}}
-                            <td>
-                              {{get modeTotalCalcs mode}}
-                            </td>
-                          {{/each}}
-                          <td>
-                            {{round (add modeTotalCalcs.trans_auto_total modeTotalCalcs.trans_taxi modeTotalCalcs.trans_public_bus modeTotalCalcs.trans_public_subway modeTotalCalcs.trans_walk)}}
-                          </td>
-                          {{#with (hash 
-                            auto=(round (div modeTotalCalcs.trans_auto_total modeAggPcts.vehicle_occupancy))
-                            taxi=(round (div modeTotalCalcs.trans_taxi ta.taxiVehicleOccupancy))
-                          )
-                          as |vehTripCalcs|}}
-                            <td>
-                              {{vehTripCalcs.auto}}
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                            <td>
-                              -
-                            </td>
-                            <td>
-                              {{#if ta.taxiVehicleOccupancy}}
-                                {{add vehTripCalcs.auto vehTripCalcs.taxi}}
-                              {{else}}
-                                -
-                              {{/if}}
-                            </td>
-                          {{/with}}
-                      {{/with}}
+                      {{#each this.modalSplitVariablesSubset as |mode|}}
+                        <td>
+                          {{round (get this.totalsOfSaturdayMode mode)}}
+                        </td>
+                      {{/each}}
+                      <td>
+                        {{round this.totalOfTotalsOfSaturdayMode}}
+                      </td>
+                      <td>
+                        {{round this.totalOfSaturdayAutoVehicleTrip}}
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round this.totalOfSaturdayTaxiVehicleTrip}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
+                      <td>
+                        -
+                      </td>
+                      <td>
+                        {{#if ta.taxiVehicleOccupancy}}
+                          {{round this.totalOfTotalsOfSaturdayVehicleTrip}}
+                        {{else}}
+                          -
+                        {{/if}}
+                      </td>
                     {{/if}}
                   {{/with}}
                 {{/with}}

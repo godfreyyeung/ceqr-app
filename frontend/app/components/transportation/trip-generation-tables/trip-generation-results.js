@@ -190,39 +190,6 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
     return weekdayAutoVehicleTripCalcs;
   }
 
-  @computed('weekdayAutoVehicleTripCalcs')
-  get weekdayAutoVehicleTripTotals() {
-    let weekdayAutoVehicleTripTotals = {
-      am: null,
-      md: null,
-      pm: null,
-    };
-    for(let time of ['am', 'md', 'pm']){
-      weekdayAutoVehicleTripTotals[time] = this.weekdayAutoVehicleTripCalcs[time]['in'] + 
-      this.weekdayAutoVehicleTripCalcs[time]['out']
-    }
-    return weekdayAutoVehicleTripTotals;
-  }
-
-  @computed('saturdayModeCalcs', 'vehicleOccupancy')
-  get saturdayAutoVehicleTripCalcs() {
-    let saturdayAutoVehicleTripCalcs = {
-      in: null,
-      out: null,
-    }
-    for(let inOut of ['in', 'out']){
-      if(!isNaN(this.saturdayModeCalcs[inOut].trans_auto_total)){
-        saturdayAutoVehicleTripCalcs[inOut] = this.saturdayModeCalcs[inOut].trans_auto_total  / this.vehicleOccupancy;
-      }
-    }
-    return saturdayAutoVehicleTripCalcs;
-  }
-
-  @computed('saturdayAutoVehicleTripCalcs')
-  get saturdayAutoVehicleTripTotal() {
-    return this.saturdayAutoVehicleTripCalcs.in + this.saturdayAutoVehicleTripCalcs.out;
-  }
-
   @computed('weekdayModeCalcs', 'analysis.taxiVehicleOccupancy')
   get weekdayTaxiVehicleTripCalcs() {
     if(this.analysis.taxiVehicleOccupancy){
@@ -243,22 +210,89 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
     return null;
   }
 
-  @computed('weekdayTaxiVehicleTripCalcs')
-  get weekdayTaxiVehicleTripTotals() {
+
+  @computed('weekdayAutoVehicleTripCalcs', 'weekdayTaxiVehicleTripCalcs', 'analysis.taxiVehicleOccupancy')
+  get weekdayVehicleTripTotals() {
     if(this.analysis.taxiVehicleOccupancy){
-      let weekdayTaxiVehicleTripTotals = {
+      let weekdayVehicleTripTotals = {
+        am: { in: {}, out: {}, },
+        md: { in: {}, out: {}, },
+        pm: { in: {}, out: {}, },
+      };
+      for(let time of ['am', 'md', 'pm']){
+        for(let inOut of ['in', 'out']){
+          weekdayVehicleTripTotals[time][inOut] = this.weekdayAutoVehicleTripCalcs[time][inOut] +
+            this.weekdayTaxiVehicleTripCalcs[time][inOut];
+        }
+      }
+      return weekdayVehicleTripTotals;
+    }
+    return null;
+  }
+
+  @computed('weekdayAutoVehicleTripCalcs')
+  get totalsOfWeekdayAutoVehicleTrip() {
+    let totalsOfWeekdayAutoVehicleTrip = {
+      am: null,
+      md: null,
+      pm: null,
+    };
+    for(let time of ['am', 'md', 'pm']){
+      totalsOfWeekdayAutoVehicleTrip[time] = this.weekdayAutoVehicleTripCalcs[time]['in'] + 
+      this.weekdayAutoVehicleTripCalcs[time]['out']
+    }
+    return totalsOfWeekdayAutoVehicleTrip;
+  }
+
+
+  @computed('weekdayTaxiVehicleTripCalcs')
+  get totalsOfWeekdayTaxiVehicleTrip() {
+    if(this.analysis.taxiVehicleOccupancy){
+      let totalsOfWeekdayTaxiVehicleTrip = {
         am: null,
         md: null,
         pm: null,
       };
       for(let time of ['am', 'md', 'pm']){
-        weekdayTaxiVehicleTripTotals[time] = this.weekdayTaxiVehicleTripCalcs[time]['in'] + 
+        totalsOfWeekdayTaxiVehicleTrip[time] = this.weekdayTaxiVehicleTripCalcs[time]['in'] + 
         this.weekdayTaxiVehicleTripCalcs[time]['out']
       }
-      return weekdayTaxiVehicleTripTotals;
+      return totalsOfWeekdayTaxiVehicleTrip;
     }
     return null;
   }
+
+  @computed('totalsOfWeekdayAutoVehicleTrip', 'totalsOfWeekdayTaxiVehicleTrip', 'analysis.taxiVehicleOccupancy')
+  get totalsOfTotalsOfWeekdayVehicleTrip() {
+    if(this.analysis.taxiVehicleOccupancy){
+      let totalsOfTotalsOfWeekdayVehicleTrip = {
+        am: null,
+        md: null,
+        pm: null,
+      };
+      for(let time of ['am', 'md', 'pm']){
+        totalsOfTotalsOfWeekdayVehicleTrip[time] = this.totalsOfWeekdayAutoVehicleTrip[time] +
+          this.totalsOfWeekdayTaxiVehicleTrip[time];
+      }
+      return totalsOfTotalsOfWeekdayVehicleTrip;
+    }
+    return null;
+  }
+
+  @computed('saturdayModeCalcs', 'vehicleOccupancy')
+  get saturdayAutoVehicleTripCalcs() {
+    let saturdayAutoVehicleTripCalcs = {
+      in: null,
+      out: null,
+    }
+    for(let inOut of ['in', 'out']){
+      if(!isNaN(this.saturdayModeCalcs[inOut].trans_auto_total)){
+        saturdayAutoVehicleTripCalcs[inOut] = this.saturdayModeCalcs[inOut].trans_auto_total  / this.vehicleOccupancy;
+      }
+    }
+    return saturdayAutoVehicleTripCalcs;
+  }
+
 
   @computed('saturdayModeCalcs', 'analysis.taxiVehicleOccupancy')
   get saturdayTaxiVehicleTripCalcs(){
@@ -277,10 +311,38 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
     return null;
   }
 
+  @computed('saturdayAutoVehicleTripCalcs', 'saturdayTaxiVehicleTripCalcs', 'analysis.taxiVehicleOccupancy')
+  get saturdayVehicleTripTotals() {
+    if(this.analysis.taxiVehicleOccupancy){
+      let saturdayVehicleTripTotals = {
+        in: {}, out: {},
+      };
+      for(let inOut of ['in', 'out']){
+        saturdayVehicleTripTotals[inOut] = this.saturdayAutoVehicleTripCalcs[inOut] +
+          this.saturdayTaxiVehicleTripCalcs[inOut];
+      }
+      return saturdayVehicleTripTotals;
+    }
+    return null;
+  }
+
+  @computed('saturdayAutoVehicleTripCalcs')
+  get totalOfSaturdayAutoVehicleTrip() {
+    return this.saturdayAutoVehicleTripCalcs.in + this.saturdayAutoVehicleTripCalcs.out;
+  }
+
   @computed('saturdayTaxiVehicleTripCalcs')
-  get saturdayTaxiVehicleTripTotal() {
+  get totalOfSaturdayTaxiVehicleTrip() {
     if(this.analysis.taxiVehicleOccupancy){
       return this.saturdayTaxiVehicleTripCalcs.in + this.saturdayTaxiVehicleTripCalcs.out;
+    }
+    return null;
+  }
+
+  @computed('totalOfSaturdayAutoVehicleTrip', 'totalOfSaturdayTaxiVehicleTrip')
+  get totalOfTotalsOfSaturdayVehicleTrip() {
+    if(this.totalOfSaturdayTaxiVehicleTrip){
+      return this.totalOfSaturdayAutoVehicleTrip + this.totalOfSaturdayTaxiVehicleTrip;
     }
     return null;
   }
