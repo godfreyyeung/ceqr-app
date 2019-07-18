@@ -5,16 +5,22 @@
         <tr>
           <th class="two wide" style="min-width: 220px;" rowspan="2">
           </th>
+          <th class="two wide" colspan="2">
+            Total
+          </th>
           {{#each this.selectedCensusTractIds as |censusTract|}}
             <th class="two wide" colspan="2">
               {{human-readable-census-tract censusTract}}
             </th>
           {{/each}}
-          <th class="two wide" colspan="2">
-            Total
-          </th>
         </tr>
         <tr>
+          <th class="one wide" colspan="1">
+            Count
+          </th>
+          <th class="one wide" colspan="1">
+            Percent
+          </th>
           {{#each this.selectedCensusTractIds as |censusTract|}}
             <th class="one wide" colspan="1">
               Count
@@ -23,12 +29,6 @@
               Percent
             </th>
           {{/each}}
-            <th class="one wide" colspan="1">
-              Count
-            </th>
-            <th class="one wide" colspan="1">
-              Percent
-            </th>
         </tr>
       </thead>
       <tbody>
@@ -57,21 +57,22 @@
             data-test-censustracts-table-baseunit
           />
           <tr style="background-color: rgb(249, 250, 251)">
-            <td colspan="{{add 1 (mult censusTracts.length 2)}}"></td>
+            <td></td>
             <td colspan="2">Average</td>
+            <td colspan="{{mult censusTracts.length 2}}"></td>
           </tr>
           <tr>
             <td>&nbsp;&nbsp;&nbsp;Vehicle Occupancy</td>
+            <td>{{round this.vehicleOccupancyAvg decimals=2}}</td>
+            <td>
+              -
+            </td>
             {{#each censusTracts as |modalSplit|}}
               <td>{{get-split-value modalSplit (array "vehicle_occupancy") true}}</td>
               <td>
                   -
               </td>
             {{/each}}
-            <td>{{round this.vehicleOccupancyAvg decimals=2}}</td>
-            <td>
-              -
-            </td>
           </tr>
         {{/let}}
       </tbody>
