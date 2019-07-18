@@ -22,7 +22,7 @@ function createTransportationCensusEstimates(type, geoid) {
     ...AUTO_BREAKDOWN_VARIABLES
   ];
 
-  const censusEstimates = variables.map((variable, idx) => {
+  const censusEstimates = variables.map((variable) => {
     return {
       geoid: fakeGeoid,
       variable: variable,

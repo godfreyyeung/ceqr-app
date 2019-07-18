@@ -6,12 +6,15 @@ import { helper } from '@ember/component/helper';
  * Accepts multiple variables, so modal splits for a random subset of modes can be calculated.
  * @param {Object[]} allModalSplitData - array of Census Tract ModalSplits
  * @param {String[]} variables - array of mode variable codes 
- * @param {Bool} includePctSign -- set to True to return a string with % symbol appended. False for integer value.
+ * @param {Bool} includePctSign -- set to True to return a string with % symbol appended.
+ * False for integer value. Defaults to True;
  */
 export function getAggregatePercent(params/*, hash*/) {
-  const [allModalSplitData, variables, includePctSign] = params;
+  let [allModalSplitData, variables, includePctSign] = params;
 
-  if(allModalSplitData && Array.isArray(allModalSplitData) && variables && Array.isArray(variables)) {
+  if (includePctSign == null) includePctSign = true;
+
+  if (allModalSplitData && Array.isArray(allModalSplitData) && variables && Array.isArray(variables)) {
     // calculate the aggregate of the sums of given variables for all modal splits
     const partTotal = allModalSplitData.reduce((runningSum, modalSplit) => {
       return runningSum + variables.reduce((runningSum, variable) => {
