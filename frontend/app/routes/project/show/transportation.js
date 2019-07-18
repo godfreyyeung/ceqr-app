@@ -1,9 +1,8 @@
 import Route from '@ember/routing/route';
-import RSVP from 'rsvp';
 
 export default class ProjectShowTransportationRoute extends Route {
 
-  async setupController(controller, model) {
+  async setupController(controller) {
     const { project } = this.modelFor('project/show');
     const transportationAnalysis = await project.get('transportationAnalysis');
 
