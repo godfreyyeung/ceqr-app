@@ -170,7 +170,10 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
 
   @computed('selectedCensusTractData')
   get vehicleOccupancy() {
-    return getAggregateValue([this.selectedCensusTractData, ['vehicle_occupancy']]);
+    if(this.selectedCensusTractData){
+      return getAggregateValue([this.selectedCensusTractData, ["vehicle_occupancy"]]) / this.selectedCensusTractData.length;
+    }
+    return null;
   }
 
   @computed('weekdayModeCalcs', 'vehicleOccupancy')
@@ -194,9 +197,9 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
   get weekdayTaxiVehicleTripCalcs() {
     if(this.analysis.taxiVehicleOccupancy){
       let weekdayTaxiVehicleTripCalcs = {
-        am: { in: {}, out: {}, },
-        md: { in: {}, out: {}, },
-        pm: { in: {}, out: {}, },
+        am: { in: null, out: null, },
+        md: { in: null, out: null, },
+        pm: { in: null, out: null, },
       };
       for(let time of ['am', 'md', 'pm']){
         for(let inOut of ['in', 'out']){
@@ -209,7 +212,6 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
     }
     return null;
   }
-
 
   @computed('weekdayAutoVehicleTripCalcs', 'weekdayTaxiVehicleTripCalcs', 'analysis.taxiVehicleOccupancy')
   get weekdayVehicleTripTotals() {
@@ -243,7 +245,6 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
     }
     return totalsOfWeekdayAutoVehicleTrip;
   }
-
 
   @computed('weekdayTaxiVehicleTripCalcs')
   get totalsOfWeekdayTaxiVehicleTrip() {
@@ -292,7 +293,6 @@ export default class TransportationTripGenerationTablesTripGenerationResultsComp
     }
     return saturdayAutoVehicleTripCalcs;
   }
-
 
   @computed('saturdayModeCalcs', 'analysis.taxiVehicleOccupancy')
   get saturdayTaxiVehicleTripCalcs(){

@@ -1,7 +1,6 @@
 import Component from '@ember/component';
-import { inject as service } from '@ember-decorators/service';
 import { computed } from '@ember-decorators/object';
-import { VARIABLE_MODE_LOOKUP, COMMUTER_VARIABLES } from '../../utils/modalSplit';
+import { getAggregateValue } from '../../helpers/get-aggregate-value';
 
 /**
  * CensusTractsTable component renders modal-split data for a project's study selection census tracts
@@ -21,5 +20,15 @@ export default class TransportationCensusTractsTableComponent extends Component 
  * @param {modalSplit[]} 
  */
   selectedCensusTractData = []
+
+  // TODO: Figure out how to work around async selectedCensusTractData property.
+  // Then, move this into existing-conditions controller.
+  @computed('selectedCensusTractData.[]')
+  get vehicleOccupancyAvg() {
+    if(this.selectedCensusTractData){
+      return getAggregateValue([this.selectedCensusTractData, ["vehicle_occupancy"]]) / this.selectedCensusTractData.length;
+    }
+    return null;
+  }
 
 }

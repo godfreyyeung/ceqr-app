@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember-decorators/service';
 import { computed } from '@ember-decorators/object';
-import { VARIABLE_MODE_LOOKUP, COMMUTER_VARIABLES } from '../../../../utils/modalSplit';
+import { VARIABLE_MODE_LOOKUP, COMMUTER_VARIABLES, MODAL_SPLIT_VARIABLES_SUBSET } from '../../../../utils/modalSplit';
 import { alias } from '@ember-decorators/object/computed';
 
 export default class ProjectShowTransportationExistingConditionsController extends Controller {
@@ -12,13 +12,7 @@ export default class ProjectShowTransportationExistingConditionsController exten
   commuterModes = COMMUTER_VARIABLES;
   modeLookup = VARIABLE_MODE_LOOKUP;
 
-  modalSplitVariablesSubset = [
-    'trans_auto_total',
-    'trans_taxi',
-    'trans_public_bus',
-    'trans_public_subway',
-    'trans_walk'
-  ]
+  modalSplitVariablesSubset = MODAL_SPLIT_VARIABLES_SUBSET;
 
   isRJTW = false;
 
